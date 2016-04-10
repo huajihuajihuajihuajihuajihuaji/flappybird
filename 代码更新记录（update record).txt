@@ -1,0 +1,4 @@
+如您修改了代码请于此留下修改记录，格式为：用户名 + 日期 + 修改内容
+Please left update record here if you revise the code,format:user name +  date + what you add/change
+
+huajihuajihuajihuajihuajihuaji 2016.4.10 完善了Bird类，并增加了简单的Pillar类
