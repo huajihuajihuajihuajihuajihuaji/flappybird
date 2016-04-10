@@ -1,12 +1,21 @@
 from livewires import games
+import random
 
-class Bird(games.Sprite):
-	
-    JUMP_SPEED = -10
+games.init(screen_width = 384,screen_height = 448,fps = 50)
+
+class Bird(games.Animation):
+
+    bird_images = ("1.png","2.png","3.png")
+    JUMP_SPEED = -13.5
     FALL_SPEED = 0.1
     start = False
     last_press = False
     die = False
+
+    def __init__(self):
+        super(Bird, self).__init__(images = Bird.bird_images,
+                                        x = 192, y = 190,
+                                        repeat_interval = 10, n_repeats = -1)
 
     def update(self):
         if self.start:
@@ -16,11 +25,17 @@ class Bird(games.Sprite):
 			
     def jump(self):
         if games.mouse.is_pressed(0):
-            #恩这个地方貌似有点问题
-           
+            if self.last_press == False:
+                self.dy = self.JUMP_SPEED
+                self.last_press = True
+
+        else:
+            self.last_press = False
+        
+            
     def speed_update(self):
         if self.dy < 0:
-            self.dy += 1
+            self.dy += 1.5
 		
         if self.dy >= 0:
             self.dy += self.FALL_SPEED
@@ -28,13 +43,31 @@ class Bird(games.Sprite):
     def check_die(self):
         if self.overlapping_sprites:
             self.die = True
+            self.destroy()
 
-def main():
-    games.init(screen_width = 384,screen_height = 448,fps = 5)
-    bird_image = games.load_image("1.png")
-    bird = Bird(x = 192,y = 224,image = bird_image)
+def add_bird():
+    bird = Bird()
     games.screen.add(bird)
     bird.start = True
+
+class Pillar(games.Sprite):
+    pillar_image = games.load_image("up.png")
+
+    def __init__(self,bottom):
+        
+        super(Pillar, self).__init__(image = Pillar.pillar_image,dx = -2,
+                                     right = 384)
+        self.bottom = bottom
+
+def add_pillar():
+    random_bottom = random.randint(30,250)
+    pillar = Pillar(random_bottom)
+    games.screen.add(pillar)
+    
+def main():
+    
+    add_bird()
+    add_pillar()
     games.screen.mainloop()
 
 main()
