@@ -14,8 +14,13 @@ class Bird(games.Animation):
 
     def __init__(self):
         super(Bird, self).__init__(images = Bird.bird_images,
-                                        x = 192, y = 190,
-                                        repeat_interval = 10, n_repeats = -1)
+                                   x = 192, y = 190,
+                                   repeat_interval = 10, n_repeats = -1)
+                                   
+    def add_bird():
+    	bird = Bird()
+    	games.screen.add(bird)
+    	bird.start = True #还没加入开始菜单于是目前是直接开始
 
     def update(self):
         if self.start:
@@ -45,24 +50,24 @@ class Bird(games.Animation):
             self.die = True
             self.destroy()
 
-def add_bird():
-    bird = Bird()
-    games.screen.add(bird)
-    bird.start = True
 
 class Pillar(games.Sprite):
     pillar_image = games.load_image("up.png")
 
     def __init__(self,bottom):
         
-        super(Pillar, self).__init__(image = Pillar.pillar_image,dx = -2,
+        super(Pillar, self).__init__(image = Pillar.pillar_image,dx = -1
                                      right = 384)
         self.bottom = bottom
-
-def add_pillar():
-    random_bottom = random.randint(30,250)
-    pillar = Pillar(random_bottom)
-    games.screen.add(pillar)
+	
+	def creat_new():
+		if self.left == 284:
+			add_pillar()
+		
+	def add_pillar():
+    	random_bottom = random.randint(30,250)
+    	pillar = Pillar(random_bottom)
+    	games.screen.add(pillar)
     
 def main():
     
