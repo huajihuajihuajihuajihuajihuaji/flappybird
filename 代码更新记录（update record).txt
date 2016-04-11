@@ -2,3 +2,4 @@
 Please left update record here if you revise the code,format:user name +  date + what you add/change
 
 huajihuajihuajihuajihuajihuaji 2016.4.10 完善了Bird类，并增加了简单的Pillar类
+huajihuajihuajihuajihuajihuaji 2016.4.11 把对象实例化代码封装到了类中，并在pillar类中增加了create_new方法
