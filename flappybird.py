@@ -1,4 +1,3 @@
-from livewires import games
 import random
 
 games.init(screen_width = 384,screen_height = 448,fps = 50)
@@ -56,18 +55,18 @@ class Pillar(games.Sprite):
 
     def __init__(self,bottom):
         
-        super(Pillar, self).__init__(image = Pillar.pillar_image,dx = -1
+        super(Pillar, self).__init__(image = Pillar.pillar_image,dx = -1,
                                      right = 384)
         self.bottom = bottom
 	
-	def creat_new():
-		if self.left == 284:
-			add_pillar()
+        def creat_new():
+            if self.left == 284:
+                add_pillar()
 		
-	def add_pillar():
-    	random_bottom = random.randint(30,250)
-    	pillar = Pillar(random_bottom)
-    	games.screen.add(pillar)
+        def add_pillar():
+            random_bottom = random.randint(30,250)
+            pillar = Pillar(random_bottom)
+            games.screen.add(pillar)
     
 def main():
     
@@ -76,3 +75,4 @@ def main():
     games.screen.mainloop()
 
 main()
+
