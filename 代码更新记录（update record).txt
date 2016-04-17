@@ -4,3 +4,4 @@ Please left update record here if you revise the code,format:user name +  date +
 huajihuajihuajihuajihuajihuaji 2016.4.10 完善了Bird类，并增加了简单的Pillar类
 huajihuajihuajihuajihuajihuaji 2016.4.11 把对象实例化代码封装到了类中，并在pillar类中增加了create_new方法
 huajihuajihuajihuajihuajihuaji 2016.4.12 把对象实例化代码封装到了类中是愚蠢的，将来会加入Game类，把生成对象方法封装在Game中，从外部实例化类
+huajihuajihuajihuajihuajihuaji 2016.4.17 加入了Game类，能成对生成了
