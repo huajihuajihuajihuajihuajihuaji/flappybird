@@ -1,3 +1,4 @@
+from livewires import games 
 import random
 
 games.init(screen_width = 384,screen_height = 448,fps = 50)
@@ -16,16 +17,13 @@ class Bird(games.Animation):
                                    x = 192, y = 190,
                                    repeat_interval = 10, n_repeats = -1)
                                    
-    def add_bird():
-    	bird = Bird()
-    	games.screen.add(bird)
-    	bird.start = True #还没加入开始菜单于是目前是直接开始
+    
 
     def update(self):
         if self.start:
             self.jump()
             self.speed_update()
-            self.check_die()
+            #self.check_die()
 			
     def jump(self):
         if games.mouse.is_pressed(0):
@@ -51,28 +49,48 @@ class Bird(games.Animation):
 
 
 class Pillar(games.Sprite):
-    pillar_image = games.load_image("up.png")
 
-    def __init__(self,bottom):
+    UP = 1
+    DOWN = 0
+    can_add = 0
+
+    images = {UP:games.load_image("up.png"),
+              DOWN:games.load_image("down.png")}
+    
+    def __init__(self,bottom,game,image,can_add):
         
-        super(Pillar, self).__init__(image = Pillar.pillar_image,dx = -1,
-                                     right = 384)
+        super(Pillar, self).__init__(image = Pillar.images[image],
+                                     dx = -1.5,right = 500)
         self.bottom = bottom
+        self.game = game
+        self.can_add = can_add
 	
-        def creat_new():
-            if self.left == 284:
-                add_pillar()
-		
-        def add_pillar():
-            random_bottom = random.randint(30,250)
-            pillar = Pillar(random_bottom)
-            games.screen.add(pillar)
+    def update(self):
+        if self.can_add:
+            self.creat_new()
+
+    def creat_new(self):
+        if self.left == 200:
+            self.game.add_pillar()
+            
+class Game(object):
+    def add_pillar(self):
+        random_bottom = random.randint(50,250)
+        pillar_up = Pillar(random_bottom,self,Pillar.UP,True)
+        pillar_down = Pillar(random_bottom+400,self,Pillar.DOWN,False)
+        games.screen.add(pillar_up)
+        games.screen.add(pillar_down)
+    
+    def add_bird(self):
+        bird = Bird()
+        games.screen.add(bird)
+        bird.start = True #还没加入开始菜单于是目前是直接开始    
     
 def main():
     
-    add_bird()
-    add_pillar()
+    game = Game()
+    game.add_bird()
+    game.add_pillar()
     games.screen.mainloop()
 
 main()
-
