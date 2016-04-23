@@ -7,7 +7,7 @@ class Bird(games.Animation):
 
     bird_images = ("1.png","2.png","3.png")
     JUMP_SPEED = -13.5
-    FALL_SPEED = 0.1
+    FALL_SPEED = 0.13
     start = False
     last_press = False
     die = False
@@ -23,7 +23,7 @@ class Bird(games.Animation):
         if self.start:
             self.jump()
             self.speed_update()
-            #self.check_die()
+            self.check_die()
 			
     def jump(self):
         if games.mouse.is_pressed(0):
@@ -70,14 +70,34 @@ class Pillar(games.Sprite):
             self.creat_new()
 
     def creat_new(self):
-        if self.left == 200:
+        if self.left == 220:
             self.game.add_pillar()
-            
+
+class Ground(games.Sprite):
+
+    image = games.load_image("ground.png")
+    can_add = True
+    
+    def __init__(self,game,x):
+        super(Ground, self).__init__(image = Ground.image,
+                                     dx = -1.5,x = x,y = 416)
+        self.game = game
+        
+    def update(self):
+        self.creat_new(False,0)
+        
+
+    def creat_new(self,correct,x):
+        if self.can_add == True:
+            if self.x <= 192:
+                self.game.add_ground(480)
+                self.can_add = False
+                        
 class Game(object):
     def add_pillar(self):
-        random_bottom = random.randint(50,250)
+        random_bottom = random.randint(50,200)
         pillar_up = Pillar(random_bottom,self,Pillar.UP,True)
-        pillar_down = Pillar(random_bottom+400,self,Pillar.DOWN,False)
+        pillar_down = Pillar(random_bottom+385,self,Pillar.DOWN,False)
         games.screen.add(pillar_up)
         games.screen.add(pillar_down)
     
@@ -85,12 +105,18 @@ class Game(object):
         bird = Bird()
         games.screen.add(bird)
         bird.start = True #还没加入开始菜单于是目前是直接开始    
+
+    def add_ground(self,x):
+        ground = Ground(self,x)
+        games.screen.add(ground) 
     
 def main():
     
     game = Game()
     game.add_bird()
     game.add_pillar()
+    game.add_ground(192)
     games.screen.mainloop()
 
 main()
+
