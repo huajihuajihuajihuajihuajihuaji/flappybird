@@ -6,8 +6,8 @@ games.init(screen_width = 384,screen_height = 448,fps = 50)
 class Bird(games.Animation):
 
     bird_images = ("1.png","2.png","3.png")
-    JUMP_SPEED = -13.5
-    FALL_SPEED = 0.13
+    JUMP_SPEED = -4.6
+    FALL_SPEED = 0.2
     start = False
     last_press = False
     die = False
@@ -17,8 +17,6 @@ class Bird(games.Animation):
                                    x = 192, y = 190,
                                    repeat_interval = 10, n_repeats = -1)
                                    
-    
-
     def update(self):
         if self.start:
             self.jump()
@@ -37,7 +35,7 @@ class Bird(games.Animation):
             
     def speed_update(self):
         if self.dy < 0:
-            self.dy += 1.5
+            self.dy += self.FALL_SPEED
 		
         if self.dy >= 0:
             self.dy += self.FALL_SPEED
@@ -57,13 +55,24 @@ class Pillar(games.Sprite):
     images = {UP:games.load_image("up.png"),
               DOWN:games.load_image("down.png")}
     
-    def __init__(self,bottom,game,image,can_add):
+    def __init__(self,random_pos,game,image,can_add,down):
         
         super(Pillar, self).__init__(image = Pillar.images[image],
-                                     dx = -1.5,right = 500)
-        self.bottom = bottom
+                                     dx = -1.5,right = 460)
+        
         self.game = game
         self.can_add = can_add
+
+        if down:
+            self.top = random_pos
+            img = self.images[0]
+            rect = (0,0,70,385 - random_pos)
+            n_img = img.subsurface(rect)
+            self.image = n_img
+            self.top =random_pos
+
+        else:
+            self.bottom = random_pos
 	
     def update(self):
         if self.can_add:
@@ -85,7 +94,6 @@ class Ground(games.Sprite):
         
     def update(self):
         self.creat_new(False,0)
-        
 
     def creat_new(self,correct,x):
         if self.can_add == True:
@@ -95,11 +103,12 @@ class Ground(games.Sprite):
                         
 class Game(object):
     def add_pillar(self):
-        random_bottom = random.randint(50,200)
-        pillar_up = Pillar(random_bottom,self,Pillar.UP,True)
-        pillar_down = Pillar(random_bottom+385,self,Pillar.DOWN,False)
+        random_pos = random.randint(50,200)
+        pillar_up = Pillar(random_pos,self,Pillar.UP,True,False)
+        pillar_down = Pillar(random_pos+120,self,Pillar.DOWN,False,True)
         games.screen.add(pillar_up)
         games.screen.add(pillar_down)
+        
     
     def add_bird(self):
         bird = Bird()
@@ -111,7 +120,7 @@ class Game(object):
         games.screen.add(ground) 
     
 def main():
-    
+    games.screen.background = games.load_image("bj.png",transparent = False)
     game = Game()
     game.add_bird()
     game.add_pillar()
@@ -119,4 +128,3 @@ def main():
     games.screen.mainloop()
 
 main()
-
